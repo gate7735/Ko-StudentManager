@@ -21,8 +21,6 @@ class MainActivity : AppCompatActivity() {
 
         init()
 
-
-
         binding.btnRegister.setOnClickListener(listener)
         binding.btnSearch.setOnClickListener(listener)
         binding.btnRemove.setOnClickListener(listener)
@@ -45,14 +43,13 @@ class MainActivity : AppCompatActivity() {
 
     fun init() {
         manager = StudentManager()
-        manager.addStudent("1", "홍길동")
-        manager.addStudent("2", "고길동")
-        manager.addStudent("3", "이순신")
+        manager.addStudent(Student("1", "홍길동"))
+        manager.addStudent(Student("2", "이순신"))
+        manager.addStudent(Student("3", "강감찬"))
     }
 
     fun resisterInfo(id: String, name: String) {
-        if (id.isNotBlank() || name.isNotBlank()) {
-            manager.addStudent(studentID, studentName)
+        if (id.isNotBlank() && name.isNotBlank() && manager.addStudent(Student(studentID, studentName))) {
             binding.tvTotalStudentCount.text = manager.getStudentCount()
             binding.tvPrintStudentInfo.text = resources.getString(R.string.register_text).replace("{학번}", studentID)
         }
@@ -60,7 +57,7 @@ class MainActivity : AppCompatActivity() {
 
     fun searchInfo(id: String) {
         if (id.isNotBlank() && manager.searchStudent(id) != null) {
-            binding.tvPrintStudentInfo.text = manager.printStudentInfo(manager.searchStudent(studentID)!!)
+            binding.tvPrintStudentInfo.text = manager.searchStudent(studentID).toString()
         } else {
             Log.w("MainActivity", resources.getString(R.string.error_input_msg))
         }

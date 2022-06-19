@@ -1,20 +1,19 @@
 package com.example.studentmanager
 
 class StudentManager {
-    lateinit var studentData: MutableList<Student>
-
-    init {
-        studentData = ArrayList()
-    }
+    private var studentList: MutableList<Student> = ArrayList()
 
     fun addStudent(id: String, name: String) {
-        var student = Student(id, name)
-        studentData.add(student)
-//        studentData!!.add(Student(id, name))
+        val student = Student(id, name)
+        studentList.add(student)
+    }
+
+    fun addStudent(student: Student): Boolean{
+        return studentList.add(student)
     }
 
     fun searchStudent(id: String): Student? {
-        for (student in studentData) {
+        for (student in studentList) {
             if (student.id == id) {
                 return student
             }
@@ -24,42 +23,27 @@ class StudentManager {
 
     fun removeStudent(id: String): Boolean {
         lateinit var deleteStudent: Student
-        var isExistID = false
-        for (student in studentData) {
+        for (student in studentList) {
             if (student.id == id) {
                 deleteStudent = student
-                isExistID = true
                 break
             }
         }
-        if (isExistID) {
-            studentData.remove(deleteStudent)
-        }
-        return isExistID
+        return studentList.remove(deleteStudent)
     }
 
     fun printStudentInfo(): String {
-        var text = ""
-        for (student in studentData) {
-            text += "학번 : " + student.id + "\n" +
-                    "이름 : " + student.name + "\n" +
-                    "=============================" + "\n"
+        var result = ""
+        for (student in studentList) {
+            result += student
         }
-        return text
-    }
-
-    fun printStudentInfo(student: Student): String {
-        var text = ""
-        text += "학번 : " + student.id + "\n" +
-                    "이름 : " + student.name + "\n" +
-                    "=============================" + "\n"
-        return text
+        return result
     }
 
     fun getStudentCount(): String {
         // 만약 R.string에서 리소스로 가져오려면 어떻게 해야 할까
         // Activity 상속이 아니기 때문에 Context를 설정할 수 없다.
         // getResources().getString(R.string.id); <- 사용 실패
-        return studentData.size.toString()
+        return studentList.size.toString()
     }
 }
